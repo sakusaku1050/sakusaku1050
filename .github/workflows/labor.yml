@@ -1,0 +1,27 @@
+name: KAGE_PRO_AUTO_WORKER
+on:
+  schedule:
+    - cron: '*/15 * * * *' # 15分おきに自動起動
+  workflow_dispatch: # 手動実行も可能にする
+
+jobs:
+  work:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.KAGE_TOKEN }} # おやびんの合鍵を使用
+
+      - name: Miniature Dragon Labor
+        run: |
+          echo "### 🐲 ミニドラ労働報告書" > README.md
+          echo "- 最終稼働: $(date)" >> README.md
+          echo "- 現在の収益（演算）: 1円" >> README.md
+          echo "- ステータス: 自律走行中" >> README.md
+          
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git commit -m "ミニドラが1円を拾ってきました (Physical Update)"
+          git push origin main
